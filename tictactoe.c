@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+// declaring the necessary functions
 void gameUI(char mat[][3]);
 int foundWinner(char mat[][3]);
 int choicePos(int a);
@@ -11,15 +12,18 @@ int main()
     char mat[3][3] = {{'1', '2', '3'}, {'4', '5', '6'}, {'7', '8', '9'}};
     int choice, row, col, pos, arr[9];
     gameUI(mat);
+
     for (int i = 0; i < 9; i++)
     {
-    restart:
+    restart: // prompts re input if user gives wrong input position
         if (i % 2 == 0)
             printf("Player-1 enter position: ");
         else
             printf("Player-2 enter position: ");
 
         scanf("%d", &choice);
+
+        // checks that whether selected position is taken or not
         for (int j = 0; j < i; j++)
         {
             if (arr[j] == choice)
@@ -28,18 +32,20 @@ int main()
                 goto restart;
             }
         }
+
+        // inputs X and O in selected position
         arr[i] = choice;
         pos = choicePos(choice);
         col = pos % 10;
         row = pos / 10;
-
         if (i % 2 == 0)
-            mat[row - 1][col - 1] = 'x';
+            mat[row - 1][col - 1] = 'X';
         else
-            mat[row - 1][col - 1] = '0';
+            mat[row - 1][col - 1] = 'O';
 
-        gameUI(mat);
-        if (i >= 4)
+        gameUI(mat); // updates the UI after each input
+
+        if (i >= 4) // minimum 5 moves needed to finish a round
         {
             int chk = 0;
             chk = foundWinner(mat);
@@ -51,6 +57,7 @@ int main()
     }
 }
 
+// prints the main UI of the game
 void gameUI(char mat[][3])
 {
     printf("\n");
@@ -68,8 +75,10 @@ void gameUI(char mat[][3])
     printf("\n\n");
 }
 
+// compares rows and columns to check winner
 int foundWinner(char mat[][3])
 {
+    // compare rows
     for (int i = 0; i < 3; i++)
     {
         if (mat[i][0] == mat[i][1])
@@ -83,6 +92,7 @@ int foundWinner(char mat[][3])
         }
     }
 
+    // compare columns
     for (int i = 0; i < 3; i++)
     {
         if (mat[0][i] == mat[1][i])
@@ -95,7 +105,7 @@ int foundWinner(char mat[][3])
             }
         }
     }
-
+    // compares primary diagonal
     if (mat[0][0] == mat[1][1])
     {
         if (mat[0][0] == mat[2][2])
@@ -105,6 +115,7 @@ int foundWinner(char mat[][3])
         }
     }
 
+    // compares secondary diagonal
     if (mat[0][2] == mat[1][1])
     {
         if (mat[0][2] == mat[2][0])
@@ -115,6 +126,7 @@ int foundWinner(char mat[][3])
     }
 }
 
+// returns which player is the winner
 void winPlayer(char a)
 {
     if (a == 'x')
@@ -123,6 +135,7 @@ void winPlayer(char a)
         printf("Player-2 Wins..\n\n");
 }
 
+// determines the position where to place input
 int choicePos(int a)
 {
 
@@ -154,9 +167,6 @@ int choicePos(int a)
         break;
     case 9:
         return 33;
-        break;
-
-    default:
         break;
     }
 }
